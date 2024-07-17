@@ -1,0 +1,36 @@
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+
+const Article = ({ image, title, describtion, author, publishedAt }) => {
+  const date = new Date(publishedAt);
+  return (
+    <div className="w-3/4 h-4/6 mx-auto">
+      <Card>
+        {image && (
+          <CardHeader>
+            <img src={image} alt={title} className="w-11/12 h-96" />
+          </CardHeader>
+        )}
+        <CardContent>
+          {title && <h1 className="font-bold text-2xl">{title}</h1>}
+          {describtion && <p>{describtion}</p>}
+          {author && (
+            <p>
+              <span className="font-bold">Author:</span> {author}
+            </p>
+          )}
+          {publishedAt && (
+            <p>
+              <span className="font-bold">Published At:</span>{" "}
+              {date.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </p>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+export default Article;
