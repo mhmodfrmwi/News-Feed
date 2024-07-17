@@ -11,8 +11,8 @@ import { useState } from "react";
 
 const Header = (props) => {
   const { onCategoryChange, onCountryChange } = props;
-  const [selectedCategory, setSelectedCategory] = useState("general");
-  const [selectedCountry, setSelectedCountry] = useState("au");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState("");
 
   const handleCategoryChange = (value) => {
     setSelectedCategory(value);
@@ -25,7 +25,7 @@ const Header = (props) => {
   };
 
   return (
-    <div className="flex flex-col gap-3 bg-indigo-500 p-3 shadow text-white">
+    <div className="flex flex-col gap-3 bg-blue-600 p-3 shadow text-white">
       <h1 className="text-centre text-2xl font-bold">Feed App</h1>
       <div className="flex justify-between gap-3 px-10 max-[426px]:flex-col">
         <Select value={selectedCountry} onValueChange={handleCountryChange}>
