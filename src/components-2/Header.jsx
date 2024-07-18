@@ -7,42 +7,32 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { debounce } from "lodash";
 import { useState } from "react";
 
 const Header = (props) => {
-  const { onCategoryChange, onCountryChange } = props;
+  const { onCategoryChange, onSearchHandler } = props;
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedCountry, setSelectedCountry] = useState("");
 
   const handleCategoryChange = (value) => {
     setSelectedCategory(value);
     onCategoryChange(value);
   };
 
-  const handleCountryChange = (value) => {
-    setSelectedCountry(value);
-    onCountryChange(value);
-  };
-
+  const debouncedOnSearch = debounce((value) => {
+    onSearchHandler(value);
+    console.log(value);
+  }, 500);
   return (
     <div className="flex flex-col gap-3 bg-blue-600 p-3 shadow text-white">
       <h1 className="text-centre text-2xl font-bold">Feed App</h1>
       <div className="flex justify-between gap-3 px-10 max-[426px]:flex-col">
-        <Select value={selectedCountry} onValueChange={handleCountryChange}>
-          <SelectTrigger className="w-[280px] max-[426px]:w-full">
-            <SelectValue placeholder="Select a country" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem value="in">India</SelectItem>
-              <SelectItem value="us">USA</SelectItem>
-              <SelectItem value="au">Australia</SelectItem>
-              <SelectItem value="ru">Russia</SelectItem>
-              <SelectItem value="fr">France</SelectItem>
-              <SelectItem value="gb">United Kingdom</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+        <Input
+          type="text"
+          placeholder="Search news"
+          className="w-[280px] max-[426px]:w-full"
+          onChange={(e) => debouncedOnSearch(e.target.value)}
+        />
         <Select value={selectedCategory} onValueChange={handleCategoryChange}>
           <SelectTrigger className="w-[280px] max-[426px]:w-full">
             <SelectValue placeholder="Select a category" />
