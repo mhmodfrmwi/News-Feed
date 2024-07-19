@@ -3,6 +3,8 @@ import { CircularProgress } from "@chakra-ui/react";
 import Article from "@/components-2/Article";
 import Header from "@/components-2/Header";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import Logo from "@/components-2/Logo";
 
 const Home = () => {
   const [articles, setArticles] = useState([]);
@@ -12,17 +14,15 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const [filteredData, setFilteredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const articlesPerPage = 5; // Adjust this number as needed
-
+  const articlesPerPage = 5;
   useEffect(() => {
-    const url = `https://saurav.tech/NewsAPI/top-headlines/category/${category}/gb.json`;
+    const url = `http://localhost:3000/articles`;
     setLoading(true);
     setError(false);
 
     const timer = setTimeout(() => {
       setLoading(false);
     }, 5000);
-
     fetch(url)
       .then((response) => {
         if (!response.ok) {
@@ -31,18 +31,23 @@ const Home = () => {
         return response.json();
       })
       .then((data) => {
-        if (data.articles) {
-          setArticles(data.articles);
+        console.log(data);
+        if (data) {
+          setArticles(
+            category !== "general"
+              ? data.filter((article) => article.source?.id == category)
+              : data
+          );
         } else {
           throw new Error("Data format is not as expected");
         }
         setLoading(false);
-        clearTimeout(timer); // Clear the timeout if data fetch is completed
+        clearTimeout(timer);
       })
       .catch(() => {
         setError(true);
         setLoading(false);
-        clearTimeout(timer); // Clear the timeout if there is an error
+        clearTimeout(timer);
       });
   }, [category]);
 
@@ -62,7 +67,7 @@ const Home = () => {
       setLoading(false);
     }, 500);
 
-    return () => clearTimeout(timer); // Cleanup timeout on unmount or when searchValue changes
+    return () => clearTimeout(timer);
   }, [searchValue, articles]);
 
   const indexOfLastArticle = currentPage * articlesPerPage;
@@ -87,22 +92,24 @@ const Home = () => {
   };
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-5 min-h-screen dark:text-cyan-50">
+      <Logo />
       <Header onCategoryChange={setCategory} onSearchHandler={setSearchValue} />
       <div className="flex flex-col gap-2 p-4 w-full items-center">
         {loading && <CircularProgress isIndeterminate color="green.300" />}
         {error && <p>Something went wrong..!</p>}
         {!loading && !error && currentArticles.length > 0
           ? currentArticles.map((article, index) => (
-              <Article
-                key={index}
-                image={article.urlToImage}
-                title={article.title}
-                description={article.description}
-                content={article.content}
-                author={article.author}
-                publishedAt={article.publishedAt}
-              />
+              <Link to={`/${article.title}`} key={index}>
+                <Article
+                  image={article.urlToImage}
+                  title={article.title}
+                  description={article.description}
+                  content={article.content}
+                  author={article.author}
+                  publishedAt={article.publishedAt}
+                />
+              </Link>
             ))
           : !loading && !error && <p>No articles found</p>}
 

@@ -3,11 +3,11 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 const Article = ({ image, title, describtion, author, publishedAt }) => {
   const date = new Date(publishedAt);
   return (
-    <div className="w-3/4 h-4/6 mx-auto max-[768px]:w-full">
+    <div className="article h-full mx-auto max-[768px]:w-4/5">
       <Card>
         {image && (
           <CardHeader>
-            <img src={image} alt={title} className="w-11/12 h-full" />
+            <img src={image} alt={title} className="w-full h-full" />
           </CardHeader>
         )}
         <CardContent>

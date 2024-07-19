@@ -5,7 +5,7 @@ import ArticleDetails from "./pages/ArticleDetails";
 
 function App() {
   return (
-    <div className=" dark:bg-slate-950">
+    <div className=" bg-slate-100 dark:bg-slate-950">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
