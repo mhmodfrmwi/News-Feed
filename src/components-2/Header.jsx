@@ -24,7 +24,7 @@ const Header = (props) => {
     console.log(value);
   }, 500);
   return (
-    <div className="flex flex-col gap-3 bg-blue-600 p-3 shadow text-white">
+    <div className="flex flex-col  bg-blue-600 p-2 shadow text-white top-0 sticky max-[426px]:gap-2">
       <h1 className="text-centre text-2xl font-bold">Feed App</h1>
       <div className="flex justify-between gap-3 px-10 max-[426px]:flex-col">
         <Input

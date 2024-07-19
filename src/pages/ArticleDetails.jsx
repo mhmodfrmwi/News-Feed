@@ -2,6 +2,6 @@ import { useParams } from "react-router-dom";
 
 const ArticleDetails = () => {
   let { id } = useParams();
-  return <>article {id}</>;
+  return <div></div>;
 };
 export default ArticleDetails;

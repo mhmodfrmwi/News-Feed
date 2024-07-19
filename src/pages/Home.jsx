@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { CircularProgress } from "@chakra-ui/react";
 import Article from "@/components-2/Article";
 import Header from "@/components-2/Header";
+import { Button } from "@/components/ui/button";
 
 const Home = () => {
   const [articles, setArticles] = useState([]);
@@ -10,6 +11,8 @@ const Home = () => {
   const [searchValue, setSearchValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [filteredData, setFilteredData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const articlesPerPage = 5; // Adjust this number as needed
 
   useEffect(() => {
     const url = `https://saurav.tech/NewsAPI/top-headlines/category/${category}/gb.json`;
@@ -47,8 +50,13 @@ const Home = () => {
     setLoading(true);
     const timer = setTimeout(() => {
       setFilteredData(
-        articles.filter((article) =>
-          article.title.toLowerCase().includes(searchValue.toLowerCase())
+        articles.filter(
+          (article) =>
+            article.content
+              ?.toLowerCase()
+              .includes(searchValue.toLowerCase()) ||
+            article.title?.toLowerCase().includes(searchValue.toLowerCase()) ||
+            article.author?.toLowerCase().includes(searchValue.toLowerCase())
         )
       );
       setLoading(false);
@@ -57,14 +65,35 @@ const Home = () => {
     return () => clearTimeout(timer); // Cleanup timeout on unmount or when searchValue changes
   }, [searchValue, articles]);
 
+  const indexOfLastArticle = currentPage * articlesPerPage;
+  const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
+  const currentArticles = filteredData.slice(
+    indexOfFirstArticle,
+    indexOfLastArticle
+  );
+
+  const totalPages = Math.ceil(filteredData.length / articlesPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-5">
       <Header onCategoryChange={setCategory} onSearchHandler={setSearchValue} />
       <div className="flex flex-col gap-2 p-4 w-full items-center">
         {loading && <CircularProgress isIndeterminate color="green.300" />}
         {error && <p>Something went wrong..!</p>}
-        {!loading && !error && filteredData.length > 0
-          ? filteredData.map((article, index) => (
+        {!loading && !error && currentArticles.length > 0
+          ? currentArticles.map((article, index) => (
               <Article
                 key={index}
                 image={article.urlToImage}
@@ -76,6 +105,21 @@ const Home = () => {
               />
             ))
           : !loading && !error && <p>No articles found</p>}
+
+        <div className="flex justify-center items-center mt-4">
+          <Button onClick={handlePrevPage} disabled={currentPage === 1}>
+            Previous
+          </Button>
+          <span className="mx-2">
+            Page {currentPage} of {totalPages}
+          </span>
+          <Button
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </Button>
+        </div>
       </div>
     </div>
   );
