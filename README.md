@@ -1,8 +1,18 @@
-# React + Vite
+# News Feed App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+News Feed App is a modern and responsive web application designed to deliver the latest news articles from various sources. With its sleek design and user-friendly interface, it ensures that users can stay updated with current events anytime, anywhere.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Fetch Articles**: Retrieve the latest news articles from a local API.
+- **Article Details**: View detailed information about each news article.
+- **Responsive Design**: Ensures a seamless experience on both desktop and mobile devices.
+- **Dark Mode Support**: Switch between light and dark themes for better readability.
+
+## Getting Started
+
+1. **Clone the repository**: `git clone https://github.com/mhmodfrmwi/News-Feed.git`
+2. **Install dependencies**: `npm install`
+3. **Run the Project**: `npm start`
+4. **install Json Server**: `npm install json-server`
+5. **Pass db.json to JSON Server CLI**:`npx json-server db.json`
