@@ -5,7 +5,7 @@ import Header from "@/components-2/Header";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import Logo from "@/components-2/Logo";
-
+import { Articles } from "@/lib/utils";
 const Home = () => {
   const [articles, setArticles] = useState([]);
   const [error, setError] = useState(false);
@@ -23,32 +23,11 @@ const Home = () => {
     const timer = setTimeout(() => {
       setLoading(false);
     }, 5000);
-    fetch(url)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
-        if (data) {
-          setArticles(
-            category !== "general"
-              ? data.filter((article) => article.source?.id == category)
-              : data
-          );
-        } else {
-          throw new Error("Data format is not as expected");
-        }
-        setLoading(false);
-        clearTimeout(timer);
-      })
-      .catch(() => {
-        setError(true);
-        setLoading(false);
-        clearTimeout(timer);
-      });
+    setArticles(
+      category !== "general"
+        ? Articles.filter((article) => article.source?.id == category)
+        : Articles
+    );
   }, [category]);
 
   useEffect(() => {
