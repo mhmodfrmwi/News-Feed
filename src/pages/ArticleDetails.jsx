@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Header from "@/components-2/Header";
 import Logo from "@/components-2/Logo";
+import { Articles } from "@/lib/utils";
 
 const ArticleDetails = () => {
   const { id } = useParams();
   const [article, setArticle] = useState(null);
 
   useEffect(() => {
-    const fetchArticle = async () => {
+    const fetchArticle = () => {
       try {
-        const response = await fetch("http://localhost:3000/articles");
-        const data = await response.json();
+        const data = Articles;
         const foundArticle = data.find((article) => article.title === id);
         if (foundArticle) {
           setArticle(foundArticle);
