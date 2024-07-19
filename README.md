@@ -14,5 +14,3 @@ News Feed App is a modern and responsive web application designed to deliver the
 1. **Clone the repository**: `git clone https://github.com/mhmodfrmwi/News-Feed.git`
 2. **Install dependencies**: `npm install`
 3. **Run the Project**: `npm start`
-4. **install Json Server**: `npm install json-server`
-5. **Pass db.json to JSON Server CLI**:`npx json-server db.json`
