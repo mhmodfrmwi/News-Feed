@@ -13,7 +13,7 @@ const Logo = () => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   };
   return (
-    <div className="flex bg-slate-400 text-slate-100 dark:bg-sky-950 p-5 shadow justify-between top-0 sticky max-[426px]:gap-2">
+    <div className="flex bg-slate-400 text-slate-100 dark:bg-sky-950 p-5 shadow justify-between top-0 sticky max-[426px]:gap-2 z-10">
       <Link to={"/"} className="text-centre text-2xl font-bold">
         Feed App
       </Link>

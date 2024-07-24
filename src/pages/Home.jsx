@@ -6,6 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import Logo from "@/components-2/Logo";
 import { Articles } from "@/lib/utils";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+
 const Home = () => {
   const [articles, setArticles] = useState([]);
   const [error, setError] = useState(false);
@@ -15,17 +18,19 @@ const Home = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const articlesPerPage = 5;
+
   useEffect(() => {
     const url = `http://localhost:3000/articles`;
     setLoading(true);
     setError(false);
 
-    const timer = setTimeout(() => {
+    setTimeout(() => {
       setLoading(false);
     }, 5000);
+
     setArticles(
       category !== "general"
-        ? Articles.filter((article) => article.source?.id == category)
+        ? Articles.filter((article) => article.source?.id === category)
         : Articles
     );
   }, [category]);
@@ -75,23 +80,35 @@ const Home = () => {
       <Logo />
       <Header onCategoryChange={setCategory} onSearchHandler={setSearchValue} />
       <div className="flex flex-col gap-2 p-4 w-full items-center">
-        {loading && <CircularProgress isIndeterminate color="green.300" />}
-        {error && <p>Something went wrong..!</p>}
-        {!loading && !error && currentArticles.length > 0
-          ? currentArticles.map((article, index) => (
-              <Link to={`/${article.title}`} key={index}>
-                <Article
-                  image={article.urlToImage}
-                  title={article.title}
-                  description={article.description}
-                  content={article.content}
-                  author={article.author}
-                  publishedAt={article.publishedAt}
-                />
-              </Link>
-            ))
-          : !loading && !error && <p>No articles found</p>}
-
+        {loading ? (
+          <>
+            {Array.from({ length: articlesPerPage }).map((_, index) => (
+              <div key={index} className="w-4/5 mb-4">
+                <Skeleton height={200} />
+                <Skeleton height={30} className="my-2" />
+                <Skeleton count={2} className="my-1" />
+              </div>
+            ))}
+          </>
+        ) : (
+          <>
+            {error && <p>Something went wrong..!</p>}
+            {!error && currentArticles.length > 0
+              ? currentArticles.map((article, index) => (
+                  <Link to={`/${article.title}`} key={index}>
+                    <Article
+                      image={article.urlToImage}
+                      title={article.title}
+                      description={article.description}
+                      content={article.content}
+                      author={article.author}
+                      publishedAt={article.publishedAt}
+                    />
+                  </Link>
+                ))
+              : !error && <p>No articles found</p>}
+          </>
+        )}
         <div className="flex justify-center items-center mt-4">
           <Button onClick={handlePrevPage} disabled={currentPage === 1}>
             Previous

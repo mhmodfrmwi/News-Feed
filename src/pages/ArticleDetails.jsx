@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import Header from "@/components-2/Header";
 import Logo from "@/components-2/Logo";
 import { Articles } from "@/lib/utils";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const ArticleDetails = () => {
   const { id } = useParams();
@@ -14,7 +16,9 @@ const ArticleDetails = () => {
         const data = Articles;
         const foundArticle = data.find((article) => article.title === id);
         if (foundArticle) {
-          setArticle(foundArticle);
+          setTimeout(() => {
+            setArticle(foundArticle);
+          }, 500);
         }
       } catch (error) {
         console.error("Error fetching article:", error);
@@ -26,8 +30,20 @@ const ArticleDetails = () => {
 
   if (!article) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-100 dark:bg-slate-950 dark:text-slate-50">
-        <p>Loading article...</p>
+      <div className="min-h-screen bg-slate-100 dark:bg-slate-950 dark:text-slate-50">
+        <Logo />
+        <div className="w-4/5 mx-auto bg-white dark:bg-sky-950 shadow-lg rounded-lg overflow-hidden mt-6 p-4">
+          <Skeleton height={400} />
+          <div className="p-6 text-start">
+            <Skeleton height={40} width={`80%`} className="mb-4" />
+            <Skeleton height={20} width={`60%`} className="mb-6" />
+            <div className="flex items-center justify-between text-sm text-gray-400 mb-6">
+              <Skeleton height={20} width={100} />
+              <Skeleton height={20} width={150} />
+            </div>
+            <Skeleton count={5} />
+          </div>
+        </div>
       </div>
     );
   }
